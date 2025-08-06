@@ -1,0 +1,30 @@
+.scoreboard {
+  flex: 1;
+  margin: 0;
+}
+
+.scoreboard-rounds {
+  margin-bottom: 1rem;
+}
+
+.scoreboard-values {
+  font-size: 1.5rem;
+}
+
+.scoreboard-wins-value {
+  color: green;
+}
+
+.scoreboard-loses-value {
+  color: red;
+}
+
+.scoreboard-ties-value {
+  color: orange;
+}
+
+.scoreboard-wins-value,
+.scoreboard-loses-value,
+.scoreboard-ties-value {
+  font-weight: bold;
+}

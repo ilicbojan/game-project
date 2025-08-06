@@ -1,0 +1,43 @@
+.info {
+  margin-top: 0;
+}
+
+.info-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.info-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.info-accordion-toggle,
+.info-reset-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
+.info-rules-image {
+  max-height: 300px;
+}
+
+@media screen and (max-width: 768px) {
+  .info-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .info-rules-image {
+    max-height: 250px;
+  }
+}

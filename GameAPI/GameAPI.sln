@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36327.8 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameAPI", "GameAPI\GameAPI.csproj", "{05AB4DF7-506C-49F9-AD30-C81596088FBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameAPI.Tests", "GameAPI.Tests\GameAPI.Tests.csproj", "{B6FE347E-9C94-431A-A9B1-3E146DE0B9C7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{05AB4DF7-506C-49F9-AD30-C81596088FBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05AB4DF7-506C-49F9-AD30-C81596088FBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05AB4DF7-506C-49F9-AD30-C81596088FBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05AB4DF7-506C-49F9-AD30-C81596088FBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6FE347E-9C94-431A-A9B1-3E146DE0B9C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6FE347E-9C94-431A-A9B1-3E146DE0B9C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6FE347E-9C94-431A-A9B1-3E146DE0B9C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6FE347E-9C94-431A-A9B1-3E146DE0B9C7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {29BC28ED-F3F2-436E-9020-67867BA831E5}
+	EndGlobalSection
+EndGlobal

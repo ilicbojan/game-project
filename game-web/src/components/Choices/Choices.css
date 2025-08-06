@@ -1,0 +1,50 @@
+.choices {
+  min-height: 136px;
+  position: relative;
+}
+
+.choices-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 1.2rem;
+  padding: 1rem 2rem;
+}
+
+.choices button {
+  flex: 1;
+  padding: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.choices button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+@media screen and (max-width: 900px) {
+  .choices-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .choices-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    padding: 0;
+  }
+
+  .choices button {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+}

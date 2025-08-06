@@ -1,0 +1,11 @@
+.game-results {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+@media screen and (max-width: 768px) {
+  .game-results {
+    flex-direction: column;
+  }
+}

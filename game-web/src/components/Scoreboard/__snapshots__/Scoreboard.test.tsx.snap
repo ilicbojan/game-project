@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Scoreboard matches the snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="scoreboard section"
+  >
+    <h3>
+      Scoreboard
+    </h3>
+    <div
+      class="scoreboard-rounds"
+    >
+      Rounds played: 6
+    </div>
+    <div
+      class="scoreboard-values"
+    >
+      Wins: 
+      <span
+        class="scoreboard-wins-value"
+      >
+        3
+      </span>
+       | Losses: 
+      <span
+        class="scoreboard-loses-value"
+      >
+        1
+      </span>
+       | Ties: 
+      <span
+        class="scoreboard-ties-value"
+      >
+        2
+      </span>
+    </div>
+  </div>
+</DocumentFragment>
+`;

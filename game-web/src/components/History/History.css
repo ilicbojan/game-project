@@ -1,0 +1,19 @@
+.history ul {
+  list-style: none;
+  padding: 0;
+}
+
+.history li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.history li:last-child {
+  border-bottom: none;
+}
+
+.history-player,
+.history-computer,
+.history-result {
+  font-weight: bold;
+}

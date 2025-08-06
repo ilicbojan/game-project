@@ -1,0 +1,11 @@
+.result {
+  min-height: 211px;
+  position: relative;
+  flex: 1;
+  margin: 0;
+}
+
+.result-details {
+  font-weight: bold;
+  font-size: 1.5rem;
+}

@@ -1,0 +1,122 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`History component matches the snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="history section"
+  >
+    <h3>
+      History 
+      <span>
+        4 / 10
+      </span>
+    </h3>
+    <ul>
+      <li>
+        <span
+          class="history-date"
+        >
+          1/1/2025 1:00:00 AM | 
+        </span>
+        You chose 
+        <span
+          class="history-player"
+        >
+          rock ✊
+        </span>
+        , computer chose 
+        <span
+          class="history-computer"
+        >
+          scissors ✌️
+        </span>
+         → 
+        <span
+          class="history-result"
+          style="color: green;"
+        >
+          win
+        </span>
+      </li>
+      <li>
+        <span
+          class="history-date"
+        >
+          1/1/2025 1:00:00 AM | 
+        </span>
+        You chose 
+        <span
+          class="history-player"
+        >
+          paper ✋
+        </span>
+        , computer chose 
+        <span
+          class="history-computer"
+        >
+          spock 🖖
+        </span>
+         → 
+        <span
+          class="history-result"
+          style="color: green;"
+        >
+          win
+        </span>
+      </li>
+      <li>
+        <span
+          class="history-date"
+        >
+          1/1/2025 1:00:00 AM | 
+        </span>
+        You chose 
+        <span
+          class="history-player"
+        >
+          lizard 🦎
+        </span>
+        , computer chose 
+        <span
+          class="history-computer"
+        >
+          rock ✊
+        </span>
+         → 
+        <span
+          class="history-result"
+          style="color: red;"
+        >
+          lose
+        </span>
+      </li>
+      <li>
+        <span
+          class="history-date"
+        >
+          1/1/2025 1:00:00 AM | 
+        </span>
+        You chose 
+        <span
+          class="history-player"
+        >
+          rock ✊
+        </span>
+        , computer chose 
+        <span
+          class="history-computer"
+        >
+          rock ✊
+        </span>
+         → 
+        <span
+          class="history-result"
+          style="color: orange;"
+        >
+          tie
+        </span>
+      </li>
+    </ul>
+  </div>
+</DocumentFragment>
+`;

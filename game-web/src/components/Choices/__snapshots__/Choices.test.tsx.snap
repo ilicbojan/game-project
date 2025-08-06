@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Choices component matches the snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="choices section"
+  >
+    <h3>
+      Choose your option
+    </h3>
+    <div
+      class="choices-buttons"
+    >
+      <button>
+        <div>
+          ROCK
+        </div>
+        <div>
+          ✊
+        </div>
+      </button>
+      <button>
+        <div>
+          PAPER
+        </div>
+        <div>
+          ✋
+        </div>
+      </button>
+      <button>
+        <div>
+          SCISSORS
+        </div>
+        <div>
+          ✌️
+        </div>
+      </button>
+      <button>
+        <div>
+          RANDOM
+        </div>
+        <div>
+          🎲
+        </div>
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
+`;

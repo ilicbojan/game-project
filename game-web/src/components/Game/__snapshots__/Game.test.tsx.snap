@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Game component matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="game"
+  >
+    <div
+      class="info section"
+    >
+      <div
+        class="info-header"
+      >
+        <h3>
+          Game Info
+        </h3>
+        <div
+          class="info-buttons"
+        >
+          <button
+            aria-controls="info-content"
+            aria-expanded="false"
+            class="info-accordion-toggle"
+          >
+            Show More
+          </button>
+          <button
+            class="info-reset-button"
+          >
+            Reset Game 🔃
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      data-testid="choices"
+    >
+      Choices
+    </div>
+    <div
+      class="game-results"
+    >
+      <div
+        data-testid="result"
+      >
+        Result
+      </div>
+      <div
+        data-testid="scoreboard"
+      >
+        Scoreboard
+      </div>
+    </div>
+    <div
+      data-testid="history"
+    >
+      History
+    </div>
+  </div>
+</DocumentFragment>
+`;
