@@ -70,7 +70,7 @@ namespace GameAPI.Controllers
             var playerChoice = (Choice)request.Player;
             var computerChoice = await _gameService.GetRandomChoiceAsync();
             var result = _gameService.PlayRound(playerChoice, computerChoice);
-                
+
             return Ok(result);
         }
     }

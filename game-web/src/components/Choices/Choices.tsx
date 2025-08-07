@@ -23,7 +23,7 @@ const Choices: React.FC<Props> = ({
     <div className="choices section">
       <h3>Choose your option</h3>
       {loadingChoices && <LoadingSpinner />}
-      {!loadingChoices && choices && (
+      {!loadingChoices && choices.length > 0 && (
         <div className="choices-buttons">
           {choices.map((choice) => (
             <button

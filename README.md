@@ -97,7 +97,13 @@ The `game-web` folder contains a React (TypeScript) frontend for the GameAPI.
    ```sh
    npm install
    ```
-2. Start the development server:
+2. Create a `.env` file in the `game-web` directory with the following content:
+
+   ```env
+   REACT_APP_API_BASE_URL="http://localhost:5215/api"
+   ```
+
+3. Start the development server:
    ```sh
    npm start
    ```

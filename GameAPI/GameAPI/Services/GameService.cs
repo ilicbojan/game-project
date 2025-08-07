@@ -7,7 +7,7 @@ namespace GameAPI.Services
 {
     public class GameService : IGameService
     {
-        private const string RandomApiUrl = "https://codechallenge.boohma.com/random";
+        private readonly string _randomApiUrl;
         private const string RandomNumberProperty = "random_number";
 
         private static readonly Dictionary<Choice, List<Choice>> _rules = new()
@@ -22,10 +22,11 @@ namespace GameAPI.Services
         private readonly HttpClient _httpClient;
         private readonly ILogger<GameService> _logger;
 
-        public GameService(HttpClient httpClient, ILogger<GameService> logger)
+        public GameService(HttpClient httpClient, ILogger<GameService> logger, IConfiguration configuration)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _randomApiUrl = configuration["ExternalApi:RandomApiUrl"] ?? throw new ArgumentNullException("RandomApiUrl configuration is missing.");
         }
 
         private static bool IsValidChoice(Choice choice) => Enum.IsDefined(typeof(Choice), choice);
@@ -45,34 +46,55 @@ namespace GameAPI.Services
 
         public async Task<Choice> GetRandomChoiceAsync()
         {
-            try
+            int maxRetries = 3;
+            for (int attempt = 1; attempt <= maxRetries; attempt++)
             {
-                var response = await _httpClient.GetAsync(RandomApiUrl);
-                response.EnsureSuccessStatusCode();
+                try
+                {
+                    var response = await _httpClient.GetAsync(_randomApiUrl);
+                    response.EnsureSuccessStatusCode();
 
-                using var stream = await response.Content.ReadAsStreamAsync();
-                using var data = await JsonDocument.ParseAsync(stream);
+                    using var stream = await response.Content.ReadAsStreamAsync();
+                    using var data = await JsonDocument.ParseAsync(stream);
+                    if (!data.RootElement.TryGetProperty(RandomNumberProperty, out var numEl))
+                    {
+                        _logger.LogError("JSON missing property '{RandomNumberProperty}'.", RandomNumberProperty);
+                        throw new GameServiceException($"JSON missing '{RandomNumberProperty}'.", new Exception());
+                    }
 
-                int random = data.RootElement.GetProperty(RandomNumberProperty).GetInt32();
-                var choices = Enum.GetValues<Choice>();
-                var choice = choices[random % choices.Length];
+                    int random = data.RootElement.GetProperty(RandomNumberProperty).GetInt32();
+                    var choices = Enum.GetValues<Choice>();
+                    var choice = choices[random % choices.Length];
 
-                if (!IsValidChoice(choice))
-                    throw new InvalidOperationException($"Invalid choice: {choice}");
-
-                return choice;
+                    return choice;
+                }
+                catch (HttpRequestException ex) when (attempt < maxRetries)
+                {
+                    _logger.LogWarning(ex, "Attempt {Attempt} failed to get random choice. Retrying...", attempt);
+                }
+                catch (HttpRequestException ex) when (attempt == maxRetries)
+                {
+                    _logger.LogError(ex, "Failed to get random choice after {MaxRetries} attempts.", maxRetries);
+                    throw new GameServiceException("Failed to get random choice after multiple attempts.", ex);
+                }
+                catch (JsonException ex)
+                {
+                    _logger.LogError(ex, "Invalid JSON received from the random choice API.");
+                    throw new GameServiceException("Invalid JSON received from the random choice API.", ex);
+                }
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to get random choice from external API.");
-                throw new GameServiceException("Failed to get random choice.", ex);
-            }
+
+            _logger.LogError("Unexpected error in GetRandomChoiceAsync.");
+            throw new GameServiceException("Unexpected error in GetRandomChoiceAsync.", new Exception("No inner exception."));
         }
 
         public PlayResponse PlayRound(Choice playerChoice, Choice computerChoice)
         {
             if (!IsValidChoice(playerChoice) || !IsValidChoice(computerChoice))
+            {
+                _logger.LogError("Invalid choice: Player - {PlayerChoice}, Computer - {ComputerChoice}", playerChoice, computerChoice);
                 throw new ArgumentException("Invalid choice value");
+            }
 
             var result = GameResult.Tie;
 

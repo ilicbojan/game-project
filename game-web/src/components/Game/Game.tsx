@@ -14,6 +14,7 @@ import Scoreboard from "../Scoreboard/Scoreboard";
 import History from "../History/History";
 import Info from "../Info/Info";
 import "./Game.css";
+import { toast } from "react-toastify";
 
 const Game = () => {
   const [choices, setChoices] = useState<ChoiceItem[]>([]);
@@ -31,7 +32,10 @@ const Game = () => {
     setLoadingChoices(true);
     GameApi.getChoices()
       .then(setChoices)
-      .catch((err) => console.error("Failed to load choices", err))
+      .catch((err) => {
+        console.error("Failed to load choices", err);
+        toast.error("Failed to load choices");
+      })
       .finally(() => setLoadingChoices(false));
   }, []);
 
@@ -71,6 +75,7 @@ const Game = () => {
       saveToStorage("history", updatedHistory);
     } catch (error) {
       console.error("Play failed", error);
+      toast.error("Play failed");
     } finally {
       setLoadingResult(false);
     }
@@ -87,6 +92,7 @@ const Game = () => {
       }
     } catch (error) {
       console.error("Failed to get random choice", error);
+      toast.error("Failed to get random choice");
     } finally {
       setLoadingResult(false);
     }

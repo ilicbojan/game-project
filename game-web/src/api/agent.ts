@@ -2,12 +2,14 @@ import axios from "axios";
 import axiosRetry from "axios-retry";
 
 const api = axios.create({
-  baseURL: "http://localhost:5215/api",
+  baseURL: process.env.REACT_APP_API_BASE_URL || "http://localhost:5215/api",
   headers: {
     "Content-Type": "application/json",
   },
-  timeout: 5000, // 5 seconds timeout
+  timeout: 5000,
 });
+
+axiosRetry(api, { retries: 3 });
 
 api.interceptors.request.use(
   (config) => config,
@@ -16,8 +18,6 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
-axiosRetry(api, { retries: 2 });
 
 api.interceptors.response.use(
   (response) => response,
