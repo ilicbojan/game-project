@@ -14,7 +14,6 @@ import Scoreboard from "../Scoreboard/Scoreboard";
 import History from "../History/History";
 import Info from "../Info/Info";
 import "./Game.css";
-import { toast } from "react-toastify";
 
 const Game = () => {
   const [choices, setChoices] = useState<ChoiceItem[]>([]);
@@ -71,6 +70,7 @@ const Game = () => {
       setHistory(updatedHistory);
       saveToStorage("history", updatedHistory);
     } catch (error) {
+      console.error("Failed to fetch random choice", error);
     } finally {
       setLoadingResult(false);
     }
@@ -86,6 +86,7 @@ const Game = () => {
         await handlePlay(randomChoice.id);
       }
     } catch (error) {
+      console.error("Failed to fetch random choice", error);
     } finally {
       setLoadingResult(false);
     }

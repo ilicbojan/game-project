@@ -65,7 +65,7 @@ describe("History component", () => {
 
     // Verify the content of each list item
     listItems.forEach((item, index) => {
-      const { player, computer, result, date } = historyMock[index];
+      const { player, computer, result } = historyMock[index];
 
       expect(item).toHaveTextContent(dateStringMock);
       expect(item).toHaveTextContent(`You: ${player}`);
