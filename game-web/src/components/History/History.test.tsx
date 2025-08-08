@@ -3,8 +3,14 @@ import { ChoiceName, GameResult, ResultType } from "../../types/game";
 import History from "./History";
 import { ResultToColorMap } from "../../utils.ts/helpers";
 
+const dateStringMock = "1/1/2025 10:00:00 AM";
+jest.mock("../../utils.ts/helpers", () => ({
+  ...jest.requireActual("../../utils.ts/helpers"),
+  formatDateTime: () => dateStringMock,
+}));
+
 describe("History component", () => {
-  const dateMock = new Date("2025-01-01T00:00:00Z");
+  const dateMock = new Date(dateStringMock);
   const historyMock: GameResult[] = [
     {
       player: ChoiceName.Rock,
@@ -31,15 +37,6 @@ describe("History component", () => {
       date: dateMock,
     },
   ];
-
-  beforeAll(() => {
-    jest.useFakeTimers();
-    jest.setSystemTime(dateMock);
-  });
-
-  afterAll(() => {
-    jest.useRealTimers();
-  });
 
   it("matches the snapshot", () => {
     const { asFragment } = render(<History history={historyMock} />);
@@ -70,9 +67,7 @@ describe("History component", () => {
     listItems.forEach((item, index) => {
       const { player, computer, result, date } = historyMock[index];
 
-      expect(item).toHaveTextContent(
-        `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
-      );
+      expect(item).toHaveTextContent(dateStringMock);
       expect(item).toHaveTextContent(`You: ${player}`);
       expect(item).toHaveTextContent(`Computer: ${computer}`);
       expect(item).toHaveTextContent(result);

@@ -16,7 +16,7 @@ exports[`History component matches the snapshot 1`] = `
         <span
           class="history-date"
         >
-          1/1/2025 1:00:00 AM | 
+          1/1/2025 10:00:00 AM | 
         </span>
         You: 
         <span
@@ -42,7 +42,7 @@ exports[`History component matches the snapshot 1`] = `
         <span
           class="history-date"
         >
-          1/1/2025 1:00:00 AM | 
+          1/1/2025 10:00:00 AM | 
         </span>
         You: 
         <span
@@ -68,7 +68,7 @@ exports[`History component matches the snapshot 1`] = `
         <span
           class="history-date"
         >
-          1/1/2025 1:00:00 AM | 
+          1/1/2025 10:00:00 AM | 
         </span>
         You: 
         <span
@@ -94,7 +94,7 @@ exports[`History component matches the snapshot 1`] = `
         <span
           class="history-date"
         >
-          1/1/2025 1:00:00 AM | 
+          1/1/2025 10:00:00 AM | 
         </span>
         You: 
         <span

@@ -1,7 +1,11 @@
 import React from "react";
 import { GameResult } from "../../types/game";
 import "./History.css";
-import { ChoiceToEmojiMap, ResultToColorMap } from "../../utils.ts/helpers";
+import {
+  ChoiceToEmojiMap,
+  formatDateTime,
+  ResultToColorMap,
+} from "../../utils.ts/helpers";
 
 interface Props {
   history: GameResult[];
@@ -16,10 +20,7 @@ const History: React.FC<Props> = ({ history }) => {
       <ul>
         {history.slice(0, 10).map((item, index) => (
           <li key={index}>
-            <span className="history-date">
-              {item.date.toLocaleDateString()} {item.date.toLocaleTimeString()}{" "}
-              |{" "}
-            </span>
+            <span className="history-date">{formatDateTime(item.date)} | </span>
             You:{" "}
             <span className="history-player">
               {item.player} {ChoiceToEmojiMap[item.player]}

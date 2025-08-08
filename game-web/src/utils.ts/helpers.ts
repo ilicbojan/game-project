@@ -27,3 +27,6 @@ const choiceItemMap: Record<string, ChoiceItem> = {
 export function getChoiceItem(name: ChoiceName): ChoiceItem {
   return choiceItemMap[name];
 }
+
+export const formatDateTime = (d: Date) =>
+  `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
