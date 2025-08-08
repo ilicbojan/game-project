@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./GameAPI
+      dockerfile: Dockerfile
+    ports:
+      - "5215:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  frontend:
+    build:
+      context: ./game-web
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_BASE_URL: "http://localhost:5215/api"
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
