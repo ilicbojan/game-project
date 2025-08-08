@@ -33,13 +33,12 @@ describe("History component", () => {
   ];
 
   beforeAll(() => {
-    jest
-      .spyOn(global.Date.prototype, "toLocaleString")
-      .mockImplementation(() => "1/1/2025 1:00:00 AM");
+    jest.useFakeTimers();
+    jest.setSystemTime(dateMock);
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    jest.useRealTimers();
   });
 
   it("matches the snapshot", () => {
