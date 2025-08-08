@@ -6,7 +6,7 @@ on:
 
 jobs:
   backend:
-    name: Backend (.NET 8)
+    name: GameAPI-tests
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -29,7 +29,7 @@ jobs:
         run: dotnet test GameAPI.sln --configuration Release --no-build --verbosity normal
 
   frontend:
-    name: Frontend (Node 20 + React)
+    name: game-web-tests
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -58,7 +58,7 @@ jobs:
         run: npm run build
 
   docker-build:
-    name: Docker build (compose)
+    name: docker-build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

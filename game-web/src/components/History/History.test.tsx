@@ -32,6 +32,16 @@ describe("History component", () => {
     },
   ];
 
+  beforeAll(() => {
+    jest
+      .spyOn(global.Date.prototype, "toLocaleString")
+      .mockImplementation(() => "1/1/2025 1:00:00 AM");
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
   it("matches the snapshot", () => {
     const { asFragment } = render(<History history={historyMock} />);
 
