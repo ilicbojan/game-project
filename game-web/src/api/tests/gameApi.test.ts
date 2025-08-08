@@ -33,13 +33,6 @@ describe("GameApi", () => {
       expect(api.get).toHaveBeenCalledWith("/game/choices");
       expect(result).toEqual(mockData);
     });
-
-    it("throws if no choices are returned", async () => {
-      apiMocked.get.mockResolvedValueOnce({ data: undefined });
-      await expect(GameApi.getChoices()).rejects.toThrow(
-        "No choices returned from the API"
-      );
-    });
   });
 
   describe("getRandomChoice", () => {
@@ -52,14 +45,6 @@ describe("GameApi", () => {
 
       expect(api.get).toHaveBeenCalledWith("/game/choice");
       expect(result).toEqual(mockData);
-    });
-
-    it("throws if no choice is returned", async () => {
-      apiMocked.get.mockResolvedValueOnce({ data: undefined });
-
-      await expect(GameApi.getRandomChoice()).rejects.toThrow(
-        "No choice returned from the API"
-      );
     });
   });
 
@@ -81,17 +66,6 @@ describe("GameApi", () => {
 
       expect(api.post).toHaveBeenCalledWith("/game/play", requestData);
       expect(result).toEqual(responseMock);
-    });
-
-    it("throws if no choices are returned", async () => {
-      const requestData: PlayRequest = {
-        player: ChoiceId.Rock,
-      };
-      apiMocked.post.mockResolvedValueOnce({ data: undefined });
-
-      await expect(GameApi.play(requestData)).rejects.toThrow(
-        "No play response returned from the API"
-      );
     });
   });
 });

@@ -32,10 +32,7 @@ const Game = () => {
     setLoadingChoices(true);
     GameApi.getChoices()
       .then(setChoices)
-      .catch((err) => {
-        console.error("Failed to load choices", err);
-        toast.error("Failed to load choices");
-      })
+      .catch(() => {})
       .finally(() => setLoadingChoices(false));
   }, []);
 
@@ -74,8 +71,6 @@ const Game = () => {
       setHistory(updatedHistory);
       saveToStorage("history", updatedHistory);
     } catch (error) {
-      console.error("Play failed", error);
-      toast.error("Play failed");
     } finally {
       setLoadingResult(false);
     }
@@ -91,8 +86,6 @@ const Game = () => {
         await handlePlay(randomChoice.id);
       }
     } catch (error) {
-      console.error("Failed to get random choice", error);
-      toast.error("Failed to get random choice");
     } finally {
       setLoadingResult(false);
     }

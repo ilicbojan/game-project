@@ -18,13 +18,13 @@ exports[`History component matches the snapshot 1`] = `
         >
           1/1/2025 1:00:00 AM | 
         </span>
-        You chose 
+        You: 
         <span
           class="history-player"
         >
           rock ✊
         </span>
-        , computer chose 
+        -- Computer: 
         <span
           class="history-computer"
         >
@@ -44,13 +44,13 @@ exports[`History component matches the snapshot 1`] = `
         >
           1/1/2025 1:00:00 AM | 
         </span>
-        You chose 
+        You: 
         <span
           class="history-player"
         >
           paper ✋
         </span>
-        , computer chose 
+        -- Computer: 
         <span
           class="history-computer"
         >
@@ -70,13 +70,13 @@ exports[`History component matches the snapshot 1`] = `
         >
           1/1/2025 1:00:00 AM | 
         </span>
-        You chose 
+        You: 
         <span
           class="history-player"
         >
           lizard 🦎
         </span>
-        , computer chose 
+        -- Computer: 
         <span
           class="history-computer"
         >
@@ -96,13 +96,13 @@ exports[`History component matches the snapshot 1`] = `
         >
           1/1/2025 1:00:00 AM | 
         </span>
-        You chose 
+        You: 
         <span
           class="history-player"
         >
           rock ✊
         </span>
-        , computer chose 
+        -- Computer: 
         <span
           class="history-computer"
         >

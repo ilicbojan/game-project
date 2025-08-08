@@ -6,7 +6,6 @@ import {
   PlayResponse,
   ResultType,
 } from "../../types/game";
-import { get } from "http";
 import { getChoiceItem } from "../../utils.ts/helpers";
 
 describe("Result component", () => {

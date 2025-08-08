@@ -16,6 +16,7 @@ export default [
         localStorage: "readonly",
         HTMLElement: "readonly",
         console: "readonly",
+        process: "readonly",
       },
     },
   },
@@ -48,9 +49,10 @@ export default [
   {
     files: ["**/*.test.{js,jsx,ts,tsx}", "**/tests/**/*.{js,jsx,ts,tsx}"],
     plugins: { jest },
-    env: { jest: true },
     languageOptions: {
-      globals: jest.environments.globals.globals,
+      globals: {
+        ...jest.environments.globals.globals,
+      },
     },
     rules: {
       ...jest.configs.recommended.rules,

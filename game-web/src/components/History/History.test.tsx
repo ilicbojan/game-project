@@ -64,8 +64,8 @@ describe("History component", () => {
       expect(item).toHaveTextContent(
         `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
       );
-      expect(item).toHaveTextContent(`You chose ${player}`);
-      expect(item).toHaveTextContent(`computer chose ${computer}`);
+      expect(item).toHaveTextContent(`You: ${player}`);
+      expect(item).toHaveTextContent(`Computer: ${computer}`);
       expect(item).toHaveTextContent(result);
     });
   });

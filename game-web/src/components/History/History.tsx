@@ -20,11 +20,11 @@ const History: React.FC<Props> = ({ history }) => {
               {item.date.toLocaleDateString()} {item.date.toLocaleTimeString()}{" "}
               |{" "}
             </span>
-            You chose{" "}
+            You:{" "}
             <span className="history-player">
               {item.player} {ChoiceToEmojiMap[item.player]}
             </span>
-            , computer chose{" "}
+            -- Computer:{" "}
             <span className="history-computer">
               {item.computer} {ChoiceToEmojiMap[item.computer]}
             </span>{" "}
