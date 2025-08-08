@@ -5,7 +5,7 @@ namespace GameAPI.Interfaces
 {
     public interface IGameService
     {
-        Task<Choice> GetRandomChoiceAsync();
+        Task<Choice> GetRandomChoiceAsync(CancellationToken ct);
         PlayResponse PlayRound(Choice playerChoice, Choice computerChoice);
         List<ChoiceItem> GetChoices();
     }

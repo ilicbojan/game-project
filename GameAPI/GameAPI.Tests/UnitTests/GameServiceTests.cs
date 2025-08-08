@@ -4,6 +4,7 @@ using GameAPI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Net;
+using System.Text;
 
 namespace GameAPI.Tests.UnitTests
 {
@@ -44,22 +45,34 @@ namespace GameAPI.Tests.UnitTests
         [Fact]
         public async Task GetRandomChoiceAsync_HttpError_ThrowsGameServiceException()
         {
-            var handler = new MockHttpMessageHandler("{}", HttpStatusCode.InternalServerError, failuresBeforeSuccess: 3);
+            var handler = new MockHttpMessageHandler("{}", HttpStatusCode.InternalServerError);
             var httpClient = new HttpClient(handler);
             var service = new GameService(httpClient, CreateFakeLogger(), CreateFakeConfiguration());
 
-            var act = async () => await service.GetRandomChoiceAsync();
+            var act = async () => await service.GetRandomChoiceAsync(CancellationToken.None);
             await act.Should().ThrowAsync<GameServiceException>();
         }
 
         [Fact]
         public async Task GetRandomChoiceAsync_InvalidJson_ThrowsGameServiceException()
         {
-            var handler = new MockHttpMessageHandler("not a json", HttpStatusCode.OK, failuresBeforeSuccess: 2);
+            var handler = new MockHttpMessageHandler("not a json", HttpStatusCode.OK);
             var httpClient = new HttpClient(handler);
             var service = new GameService(httpClient, CreateFakeLogger(), CreateFakeConfiguration());
 
-            var act = async () => await service.GetRandomChoiceAsync();
+            var act = async () => await service.GetRandomChoiceAsync(CancellationToken.None);
+
+            await act.Should().ThrowAsync<GameServiceException>();
+        }
+
+        [Fact]
+        public async Task GetRandomChoiceAsync_MissingRandomNumber_ThrowsGameServiceException()
+        {
+            var handler = new MockHttpMessageHandler("{}", HttpStatusCode.OK);
+            var httpClient = new HttpClient(handler);
+            var service = new GameService(httpClient, CreateFakeLogger(), CreateFakeConfiguration());
+
+            var act = async () => await service.GetRandomChoiceAsync(CancellationToken.None);
 
             await act.Should().ThrowAsync<GameServiceException>();
         }
@@ -71,23 +84,10 @@ namespace GameAPI.Tests.UnitTests
             var httpClient = new HttpClient(handler);
             var service = new GameService(httpClient, CreateFakeLogger(), CreateFakeConfiguration());
 
-            var choice = await service.GetRandomChoiceAsync();
+            var choice = await service.GetRandomChoiceAsync(CancellationToken.None);
 
             // Assert: 7 % 5 = 2, so choiceId = 3 (Scissors)
             choice.Should().Be(Choice.Scissors);
-        }
-
-        [Fact]
-        public async Task GetRandomChoiceAsync_RetriesOnFailure()
-        {
-            var handler = new MockHttpMessageHandler("{}", HttpStatusCode.InternalServerError, failuresBeforeSuccess: 2);
-            var httpClient = new HttpClient(handler);
-            var service = new GameService(httpClient, CreateFakeLogger(), CreateFakeConfiguration());
-
-            var choice = await service.GetRandomChoiceAsync();
-
-            // Assert: Ensure the service retries and eventually succeeds
-            choice.Should().BeOneOf(Choice.Rock, Choice.Paper, Choice.Scissors, Choice.Lizard, Choice.Spock);
         }
 
         // PlayRound tests
@@ -175,47 +175,18 @@ namespace GameAPI.Tests.UnitTests
     {
         private readonly string _response;
         private readonly HttpStatusCode _statusCode;
-        private readonly int _failuresBeforeSuccess;
-        private int _requestCount;
 
-        public MockHttpMessageHandler(string response, HttpStatusCode statusCode, int failuresBeforeSuccess = 0)
+        public MockHttpMessageHandler(string response, HttpStatusCode statusCode)
         {
             _response = response;
             _statusCode = statusCode;
-            _failuresBeforeSuccess = failuresBeforeSuccess;
-            _requestCount = 0;
         }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            _requestCount++;
-
-            if (_requestCount <= _failuresBeforeSuccess)
+            return Task.FromResult(new HttpResponseMessage(_statusCode)
             {
-                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.InternalServerError));
-            }
-
-            // Simulate specific responses for tests
-            if (_response == "not a json")
-            {
-                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent(_response)
-                });
-            }
-
-            if (_response == "{\"random_number\": 7}")
-            {
-                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent(_response)
-                });
-            }
-
-            // Default valid response
-            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent("{\"random_number\": 3}")
+                Content = new StringContent(_response, Encoding.UTF8, "application/json")
             });
         }
     }

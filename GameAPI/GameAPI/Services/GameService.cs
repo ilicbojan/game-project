@@ -1,7 +1,8 @@
-﻿using GameAPI.Enums;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using GameAPI.Enums;
 using GameAPI.Interfaces;
 using GameAPI.Models;
-using System.Text.Json;
 
 namespace GameAPI.Services
 {
@@ -26,7 +27,8 @@ namespace GameAPI.Services
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _randomApiUrl = configuration["ExternalApi:RandomApiUrl"] ?? throw new ArgumentNullException("RandomApiUrl configuration is missing.");
+            _randomApiUrl = configuration["ExternalApi:RandomApiUrl"]
+                ?? throw new ArgumentNullException("RandomApiUrl configuration is missing.");
         }
 
         private static bool IsValidChoice(Choice choice) => Enum.IsDefined(typeof(Choice), choice);
@@ -44,48 +46,40 @@ namespace GameAPI.Services
                 .ToList();
         }
 
-        public async Task<Choice> GetRandomChoiceAsync()
+        private sealed record RandomApiResponse([property: JsonPropertyName(RandomNumberProperty)] int? RandomNumber);
+
+        public async Task<Choice> GetRandomChoiceAsync(CancellationToken ct = default)
         {
-            int maxRetries = 3;
-            for (int attempt = 1; attempt <= maxRetries; attempt++)
+            try
             {
-                try
+                var data = await _httpClient.GetFromJsonAsync<RandomApiResponse>(_randomApiUrl, cancellationToken: ct);
+                if (data is null || data.RandomNumber is null)
                 {
-                    var response = await _httpClient.GetAsync(_randomApiUrl);
-                    response.EnsureSuccessStatusCode();
+                    _logger.LogError("Random API returned null payload.");
+                    throw new GameServiceException("Random API returned null payload.", new NullReferenceException(nameof(data)));
+                }
 
-                    using var stream = await response.Content.ReadAsStreamAsync();
-                    using var data = await JsonDocument.ParseAsync(stream);
-                    if (!data.RootElement.TryGetProperty(RandomNumberProperty, out var numEl))
-                    {
-                        _logger.LogError("JSON missing property '{RandomNumberProperty}'.", RandomNumberProperty);
-                        throw new GameServiceException($"JSON missing '{RandomNumberProperty}'.", new Exception());
-                    }
+                var choices = Enum.GetValues<Choice>();
+                var index = Math.Abs(data.RandomNumber.Value) % choices.Length;
 
-                    int random = data.RootElement.GetProperty(RandomNumberProperty).GetInt32();
-                    var choices = Enum.GetValues<Choice>();
-                    var choice = choices[random % choices.Length];
-
-                    return choice;
-                }
-                catch (HttpRequestException ex) when (attempt < maxRetries)
-                {
-                    _logger.LogWarning(ex, "Attempt {Attempt} failed to get random choice. Retrying...", attempt);
-                }
-                catch (HttpRequestException ex) when (attempt == maxRetries)
-                {
-                    _logger.LogError(ex, "Failed to get random choice after {MaxRetries} attempts.", maxRetries);
-                    throw new GameServiceException("Failed to get random choice after multiple attempts.", ex);
-                }
-                catch (JsonException ex)
-                {
-                    _logger.LogError(ex, "Invalid JSON received from the random choice API.");
-                    throw new GameServiceException("Invalid JSON received from the random choice API.", ex);
-                }
+                return choices[index];
             }
-
-            _logger.LogError("Unexpected error in GetRandomChoiceAsync.");
-            throw new GameServiceException("Unexpected error in GetRandomChoiceAsync.", new Exception("No inner exception."));
+            catch (OperationCanceledException oce) when (ct.IsCancellationRequested)
+            {
+                _logger.LogWarning(oce, "Random choice request canceled.");
+                throw;
+            }
+            catch (JsonException ex)
+            {
+                _logger.LogError(ex, "Invalid JSON received from the random choice API.");
+                throw new GameServiceException("Invalid JSON received from the random choice API.", ex);
+            }
+            catch (HttpRequestException ex)
+            {
+                // Polly already retried; this is the terminal failure
+                _logger.LogError(ex, "Failed to get random choice after retries.");
+                throw new GameServiceException("Failed to get random choice after retries.", ex);
+            }
         }
 
         public PlayResponse PlayRound(Choice playerChoice, Choice computerChoice)
@@ -109,7 +103,7 @@ namespace GameAPI.Services
             {
                 Player = (int)playerChoice,
                 Computer = (int)computerChoice,
-                Result = result.ToString().ToLower()
+                Result = result.ToString().ToLowerInvariant()
             };
         }
     }
