@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  backend:
+    name: Backend (.NET 8)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: GameAPI
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore
+        run: dotnet restore GameAPI.sln
+
+      - name: Build
+        run: dotnet build GameAPI.sln --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test GameAPI.sln --configuration Release --no-build --verbosity normal
+
+  frontend:
+    name: Frontend (Node 20 + React)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: game-web
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: game-web/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test
+        env:
+          CI: true
+        run: npm test -- --watch=false
+
+      - name: Build
+        env:
+          REACT_APP_API_BASE_URL: http://localhost:8080
+        run: npm run build
+
+  docker-build:
+    name: Docker build (compose)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Compose Build
+        run: docker compose build

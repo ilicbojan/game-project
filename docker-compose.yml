@@ -9,6 +9,8 @@ services:
       - "5215:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - Cors__AllowedOrigin=http://localhost:3000
+      - ExternalApi__RandomApiUrl=https://codechallenge.boohma.com/random
 
   frontend:
     build:
